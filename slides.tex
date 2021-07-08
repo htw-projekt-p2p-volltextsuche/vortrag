@@ -16,11 +16,11 @@
 \usepackage{graphicx}
 \graphicspath{ {./images/} }
 
-\title{}
+\title{Verteilte Volltextsuche}
 \subtitle{}
 \author{Jonathan Neidel, 573619}
 \date{Juni 2021}
-\institute{HTW Berlin, Angewandte Informatik}
+\institute{HTW Berlin, Angewandte Informatik, Projektarbeit bei Herr Hoppe}
 \logo{\includegraphics[width=1cm]{logo}}
 
 % theme + color theme
@@ -31,5 +31,92 @@
 
 \begin{document}
 \frame{\titlepage}
+
+\section{Komponente}
+\begin{frame}
+  \begin{center}
+    {\Huge Komponente}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \begin{center}
+    \includegraphics[width=8cm]{Komponente-einzeln}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \begin{center}
+    {\Huge UI}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Crawler}
+
+  \begin{itemize}
+    \item Datenbeschaffung
+    \item Vereinheitlichung
+    \item Übergabe an die Volltextsuche
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Volltextsuche}
+
+  Zwei Modi:
+  \begin{enumerate}
+    \item Einfügen von Daten
+    \item Abrufen von Daten
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+  \frametitle{Einfügen von Daten}
+
+  Füllwörter entfernen:
+
+  \begin{itemize}
+    \item Pronomen (ich, ihre, ..)
+    \item Konjunktionen (und, aber, ..)
+    \item Präposition (auf, bis, ..)
+    \item Artikel (der, die, ..)
+  \end{itemize}
+
+  \break
+
+  Stemming
+
+  \bigskip
+
+  Zurückführung auf den Wortstamm
+
+  \medskip
+
+  Häuser, Hauses $\rightarrow$ Haus
+\end{frame}
+
+\begin{frame}
+  \frametitle{Invertierter Index}
+
+  <++>
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+  \frametitle{DHT}
+  P2P Aspekt des Projektes
+
+  \begin{center}
+    \includegraphics[width=8cm]{Komponente-verbunden}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \frametitle{DHT Funktionsweise}
+
+  <++>
+\end{frame}
+
+% <++>
 
 \end{document}
