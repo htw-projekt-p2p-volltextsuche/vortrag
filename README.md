@@ -1,4 +1,6 @@
-# htw-Ahnenforschung-mit-DNA
+# Vortrag
+
+> Vortrag zur Vorstellung des Projektes
 
 - [Vortagsfolien](slides.pdf)
 - [Beamer Sourcecode (TeX)](slides.tex)
