@@ -1,4 +1,3 @@
-# htw-Ahnenforschung-mit-DNA
+# draw.io
 
-- [Vortagsfolien](slides.pdf)
-- [Beamer Sourcecode (TeX)](slides.tex)
+- [edit Komponente](https://app.diagrams.net/#Hhtw-projekt-p2p-volltextsuche%2Fvortrag%2Fdraw.io%2FKomponente.drawio)
