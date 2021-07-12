@@ -16,7 +16,9 @@
 \usepackage{graphicx}
 \graphicspath{ {./images/} }
 
-\title{Verteilte Volltextsuche}
+\usepackage[normalem]{ulem}
+
+\title{Peer-to-Peer Volltextsuche}
 \subtitle{}
 \author{
   Boris Caspary \\
@@ -28,7 +30,7 @@
   Simon Breiter \\
   Stefan Sadewasser \\
 }
-\date{Juni 2021}
+\date{Juli 2021}
 \institute{HTW Berlin, Angewandte Informatik, Projektstudium bei Herr Hoppe}
 \logo{\includegraphics[width=1cm]{logo}}
 
@@ -79,49 +81,161 @@
   \end{itemize}
 \end{frame}
 
-\section{Komponente}
+\section{Arbeitsteilung}
 \begin{frame}
   \begin{center}
-    {\Huge Komponente}
+    {\Huge Arbeitsteilung}
   \end{center}
 \end{frame}
 
+\begin{frame}[allowframebreaks]
+  \frametitle{Arbeitspakete}
+
+  \includegraphics[width=5cm]{Arbeitspakete}
+  \break
+  \includegraphics[width=5cm]{Arbeitspakete-Crawler}
+  \break
+  \includegraphics[width=5cm]{Arbeitspakete-Main}
+  \break
+  \includegraphics[width=8cm]{Schichten}
+\end{frame}
+
+
+\section{Peer-to-Peer}
 \begin{frame}
-  \begin{center}
-    \includegraphics[width=8cm]{Komponente-einzeln}
-  \end{center}
+  \frametitle{Peer-to-Peer}
+  \includegraphics[width=8cm]{Schichten-p2p}
 \end{frame}
 
 \begin{frame}
-  \begin{center}
-    {\Huge UI}
-  \end{center}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Crawler}
+  \frametitle{DHT}
 
   \begin{itemize}
-    \item Datenbeschaffung
-    \item Vereinheitlichung
-    \item Übergabe an die Volltextsuche
+    \item Distributed
+    \item Hash Table
   \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Hash Table}
+
+  \begin{itemize}
+    \item key-value store
+  \end{itemize}
+
+  \medskip
+  \includegraphics[width=8cm]{ht}
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+  \frametitle{Distributed HT}
+
+  \includegraphics[width=8cm]{dht1}
+
+  \break
+
+  \includegraphics[width=8cm]{dht2}
+
+  \break
+
+  \includegraphics[width=8cm]{dht3}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Schichten}
+
+  \begin{center}
+    \includegraphics[height=6cm]{Schichten-alt}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \frametitle{Verteilung des Systems}
+
+  Design Entscheidung:
+
+  Wie soll die Funktionalität des Systems verteilt werden?
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+  \frametitle{1. Zentralisierung}
+
+  \begin{center}
+    \includegraphics[height=6cm]{Hauptinstanz}
+  \end{center}
+
+  \break
+  Pro:
+  \begin{itemize}
+    \item zentrale Anlaufstelle (Nutzerfreundlich)
+  \end{itemize}
+
+  Con:
+  \begin{itemize}
+    \item zentrale Anlaufstelle (single point of failure)
+    \item Load nicht verteilt
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+  \frametitle{2. Pur}
+
+  \begin{center}
+    \includegraphics[height=6cm]{Gleichberechtigt}
+  \end{center}
+
+  \break
+  Pro:
+  \begin{itemize}
+    \item Load verteilt
+    \item mehrere Anlaufstellen (kein single point of failure)
+  \end{itemize}
+
+  Con:
+  \begin{itemize}
+    \item mehrere Anlaufstellen (verwirrte Nutzer $\rightarrow$ Loadbalancer)
+    \item Administrationsaufwand ($\rightarrow$ OPS)
+  \end{itemize}
+\end{frame}
+
+\section{Volltextsuche}
+\begin{frame}
+  \frametitle{Volltextsuche}
+
+  \begin{center}
+    \includegraphics[height=6cm]{Schichten-alt-volltext}
+  \end{center}
 \end{frame}
 
 \begin{frame}
   \frametitle{Volltextsuche}
 
-  Zwei Modi:
-  \begin{enumerate}
-    \item Einfügen von Daten
+  Modi:
+  \begin{enumerate}[I]
+    \item Vorbereiten und Einfügen von Daten
     \item Abrufen von Daten
   \end{enumerate}
 \end{frame}
 
 \begin{frame}[allowframebreaks]
-  \frametitle{Einfügen von Daten}
+  \frametitle{I. Vorbereiten von Daten}
 
-  Füllwörter entfernen:
+  Beispiel:
+
+  Klaus-Rüdiger steht vor dem Hause der CDU.
+
+  \break
+
+  \textbf{Tokenisierung:}
+
+  Segmentierung in einzelne Wörter
+
+  \bigskip
+  'Klaus-Rüdiger' 'steht' 'vor' 'dem' 'Hause' 'der' 'CDU'
+
+  \break
+
+  \textbf{Füllwörter entfernen:}
 
   \begin{itemize}
     \item Pronomen (ich, ihre, ..)
@@ -130,46 +244,109 @@
     \item Artikel (der, die, ..)
   \end{itemize}
 
+  \bigskip
+
+  'Klaus-Rüdiger' 'steht' \sout{'vor'} \sout{'dem'} 'Hause' \sout{'der'} 'CDU'
+
   \break
 
-  Stemming
+  \textbf{Stemming:}
 
   \bigskip
 
-  Zurückführung auf den Wortstamm
+  Zurückführung auf den Wortstamm:
 
   \medskip
 
-  Häuser, Hauses $\rightarrow$ Haus
+  Häuser $\rightarrow$ Haus
+
+  \bigskip
+  'Klaus-Rüdiger' \textbf{'steht' $\rightarrow$ 'stehen'} \textbf{'Hause' $\rightarrow$ 'Haus'} 'CDU'
+
+  \break
+
+  \textbf{Normalisierung:}
+
+  \includegraphics[width=8cm]{normalisierung}
+
+  \bigskip
+  'Klaus-Rüdiger' 'stehen' 'Haus' \textbf{'CDU' $\rightarrow$ 'cdu-csu'}
+\end{frame}
+
+\begin{frame}
+  \frametitle{I. Einfügen von Daten}
+
+  \begin{itemize}
+    \item in invertierten Index
+    \item verteilt durch DHT
+  \end{itemize}
 \end{frame}
 
 \begin{frame}
   \frametitle{Invertierter Index}
 
-  <++>
+  \includegraphics[width=8cm]{inverted-index}
 \end{frame}
 
 \begin{frame}[allowframebreaks]
-  \frametitle{DHT}
-  P2P Aspekt des Projektes
+  \frametitle{I. Verteilung der Daten}
 
-  \begin{center}
-    \includegraphics[width=8cm]{Komponente-verbunden}
-  \end{center}
+  Design Entscheidung:
+
+  Wie sollen die Daten verteilt werden?
+
+  \break
+
+  \textbf{1. Nach Partei}
+
+  Ein Sever zuständig für eine Partei
+
+  Pro:
+  \begin{itemize}
+    \item Schnell beim Einfügen
+    \item Schnell beim Abrufen wenn nach Partei gefiltert
+  \end{itemize}
+  Con:
+  \begin{itemize}
+    \item Sonst langsam
+    \item Load Imbalance
+  \end{itemize}
+
+  \break
+
+  \textbf{2. Nach Keyword}
+
+  Gleichmäßige Verteilung
+
+  Pro:
+  \begin{itemize}
+    \item Schnell beim Abrufen von Keywords
+    \item Load Balance
+  \end{itemize}
+
+  Con:
+  \begin{itemize}
+    \item Langsam bei Partei Filterung ($\rightarrow$ Restriktion)
+    \item Langsam beim Einfügen
+  \end{itemize}
 \end{frame}
 
 \begin{frame}
-  \frametitle{DHT Funktionsweise}
+  \frametitle{II. Abrufen von Daten}
 
-  <++>
+  \begin{itemize}
+    \item Abholen der Daten aus invertiertem Index
+    \item Bewertung der Relevanz (sortieren)
+  \end{itemize}
 \end{frame}
 
 \section{Demo}
 \begin{frame}
+  \frametitle{UI Demo}
+
   \begin{center}
-    {\Huge Demo}
+    \includegraphics[height=6cm]{Schichten-alt-ui}
   \end{center}
 \end{frame}
-% <++>
 
 \end{document}
