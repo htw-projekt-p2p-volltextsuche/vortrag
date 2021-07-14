@@ -96,10 +96,13 @@
   \includegraphics[width=5cm]{Arbeitspakete-Crawler}
   \break
   \includegraphics[width=5cm]{Arbeitspakete-Main}
-  \break
-  \includegraphics[width=8cm]{Schichten}
 \end{frame}
 
+\begin{frame}
+  \frametitle{Schichtenmodell}
+
+  \includegraphics[width=8cm]{Schichten}
+\end{frame}
 
 \section{Peer-to-Peer}
 \begin{frame}
@@ -124,7 +127,12 @@
   \end{itemize}
 
   \medskip
+
   \includegraphics[width=8cm]{ht}
+
+  \medskip
+
+  {\tiny Bildquelle: https://en.wikipedia.org/wiki/Hash\_table}
 \end{frame}
 
 \begin{frame}[allowframebreaks]
@@ -196,6 +204,10 @@
     \item mehrere Anlaufstellen (verwirrte Nutzer $\rightarrow$ Loadbalancer)
     \item Administrationsaufwand ($\rightarrow$ OPS)
   \end{itemize}
+
+  \bigskip
+
+  Unsere Wahl
 \end{frame}
 
 \section{Volltextsuche}
@@ -211,14 +223,18 @@
   \frametitle{Volltextsuche}
 
   Modi:
-  \begin{enumerate}[I]
-    \item Vorbereiten und Einfügen von Daten
+  \begin{enumerate}
+    \item Indexieren von Daten
+      \begin{enumerate}[a]
+        \item Vorbereiten der Daten
+        \item Einfügen in Invertierten Index
+      \end{enumerate}
     \item Abrufen von Daten
   \end{enumerate}
 \end{frame}
 
 \begin{frame}[allowframebreaks]
-  \frametitle{I. Vorbereiten von Daten}
+  \frametitle{1a. Vorbereiten von Daten}
 
   Beispiel:
 
@@ -228,25 +244,33 @@
 
   \textbf{Tokenisierung:}
 
-  Segmentierung in einzelne Wörter
-
-  \bigskip
-  'Klaus-Rüdiger' 'steht' 'vor' 'dem' 'Hause' 'der' 'CDU'
-
-  \break
-
-  \textbf{Füllwörter entfernen:}
-
   \begin{itemize}
-    \item Pronomen (ich, ihre, ..)
-    \item Konjunktionen (und, aber, ..)
-    \item Präposition (auf, bis, ..)
-    \item Artikel (der, die, ..)
+    \item Segmentierung in einzelne Wörter
+    \item Lowercase
+    \item Satzzeichen entfernen
   \end{itemize}
 
   \bigskip
+  'klaus-rüdiger' 'steht' 'vor' 'dem' 'hause' 'der' 'cdu'
 
-  'Klaus-Rüdiger' 'steht' \sout{'vor'} \sout{'dem'} 'Hause' \sout{'der'} 'CDU'
+  \break
+
+  \textbf{Stopwörter entfernen:}
+
+  \medskip
+
+  {\scriptsize
+    \begin{itemize}
+      \item Pronomen (ich, ihre, ..)
+      \item Konjunktionen (und, aber, ..)
+      \item Präposition (auf, bis, ..)
+      \item Artikel (der, die, ..)
+    \end{itemize}
+  }
+
+  \bigskip
+
+  'klaus-rüdiger' 'steht' \sout{'vor'} \sout{'dem'} 'hause' \sout{'der'} 'cdu'
 
   \break
 
@@ -254,14 +278,13 @@
 
   \bigskip
 
-  Zurückführung auf den Wortstamm:
-
-  \medskip
-
-  Häuser $\rightarrow$ Haus
+  \begin{itemize}
+    \item Zurückführung auf den Wortstamm
+  \end{itemize}
 
   \bigskip
-  'Klaus-Rüdiger' \textbf{'steht' $\rightarrow$ 'stehen'} \textbf{'Hause' $\rightarrow$ 'Haus'} 'CDU'
+
+  'klaus-rüdiger' \textbf{'steht' $\rightarrow$ 'steh'} \textbf{'hause' $\rightarrow$ 'haus'} 'cdu'
 
   \break
 
@@ -270,72 +293,105 @@
   \includegraphics[width=8cm]{normalisierung}
 
   \bigskip
-  'Klaus-Rüdiger' 'stehen' 'Haus' \textbf{'CDU' $\rightarrow$ 'cdu-csu'}
+
+  'klaus-rüdiger' 'steh' 'haus' \textbf{'cdu' $\rightarrow$ 'cdu-csu'}
 \end{frame}
 
 \begin{frame}
-  \frametitle{I. Einfügen von Daten}
-
-  \begin{itemize}
-    \item in invertierten Index
-    \item verteilt durch DHT
-  \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \frametitle{Invertierter Index}
+  \frametitle{1b. Inverted Index}
 
   \includegraphics[width=8cm]{inverted-index}
 \end{frame}
 
+\begin{frame}
+  \frametitle{1b. Distributed Inverted Index}
+
+  Einfügen in den DHT
+
+  \medskip
+
+  \includegraphics[width=8cm]{distributed-inverted-index}
+\end{frame}
+
 \begin{frame}[allowframebreaks]
-  \frametitle{I. Verteilung der Daten}
+  \frametitle{1b. Aufteilung der Daten}
 
   Design Entscheidung:
 
-  Wie sollen die Daten verteilt werden?
+  Wie sollen die Daten aufgeteilt werden?
 
   \break
 
-  \textbf{1. Nach Partei}
+  % \textbf{1. Nach Partei}
 
-  Ein Sever zuständig für eine Partei
+  % Pro Partei ein Peer zuständig
 
-  Pro:
+  % Pro:
+  % \begin{itemize}
+  %   \item Schnell beim Einfügen
+  %   \item Schnell beim Abrufen wenn nach Partei gefiltert
+  % \end{itemize}
+  % Con:
+  % \begin{itemize}
+  %   \item Sonst langsam
+  %   \item Load Imbalance
+  %   \item Benachteiligung einer Partei wenn Peer down
+  % \end{itemize}
+
+  % \break
+
+  \textbf{1. Partition by Keyword}
+
   \begin{itemize}
-    \item Schnell beim Einfügen
-    \item Schnell beim Abrufen wenn nach Partei gefiltert
-  \end{itemize}
-  Con:
-  \begin{itemize}
-    \item Sonst langsam
-    \item Load Imbalance
+    \item Gleichmäßige Verteilung der Keywords über DHT
+    \item Speicherung in Distributed Inverted Index
   \end{itemize}
 
-  \break
-
-  \textbf{2. Nach Keyword}
-
-  Gleichmäßige Verteilung
+  \bigskip
 
   Pro:
   \begin{itemize}
     \item Schnell beim Abrufen von Keywords
-    \item Load Balance
   \end{itemize}
 
   Con:
   \begin{itemize}
-    \item Langsam bei Partei Filterung ($\rightarrow$ Restriktion)
     \item Langsam beim Einfügen
+      \begin{itemize}
+        \item $\rightarrow$ 2-3 min mit Optimierungen
+        \item $\rightarrow$ Relevanz für den Use Case
+      \end{itemize}
+  \end{itemize}
+
+  \break
+
+  \textbf{2. Partition by Document}
+
+  \begin{itemize}
+    \item Gleichmäßige Verteilung der Dokumente über Peers
+    \item Speicherung in lokalem Invertiertem Index
+  \end{itemize}
+
+  \bigskip
+
+  Pro:
+  \begin{itemize}
+    \item Schnell beim Einfügen (lokales Speichern in Sekunden)
+    \item Redundanz für einzelne Keywords
+  \end{itemize}
+  Con:
+  \begin{itemize}
+    \item Abruf langsam (Fluten des Netzwerks)
+    \item Schlechte Skalierbarkeit
   \end{itemize}
 \end{frame}
 
 \begin{frame}
-  \frametitle{II. Abrufen von Daten}
+  \frametitle{2. Abrufen von Daten}
 
   \begin{itemize}
-    \item Abholen der Daten aus invertiertem Index
+    \item Vorbereitung der Suchbegriffe (Tokenisation, etc.)
+    \item Abrufen der Daten aus Distributed Inverted Index
     \item Bewertung der Relevanz (sortieren)
   \end{itemize}
 \end{frame}
