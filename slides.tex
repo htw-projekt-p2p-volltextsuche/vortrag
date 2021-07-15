@@ -52,7 +52,7 @@
 
 \begin{frame}[allowframebreaks]
   \frametitle{Basiskonzepte}
-  Peer 2 Peer
+  Peer-to-peer
   \begin{itemize}
     \item Rechnernetz
     \item Gleichtberechtigte Knoten
@@ -94,22 +94,22 @@
     \includegraphics[width=\paperwidth]{drakememe}
 \end{frame}
 
-\section{Arbeitsteilung}
+\section{Aufgabenteilung}
 \begin{frame}
   \begin{center}
-    {\Huge Arbeitsteilung}
+    {\Huge Aufgabenteilung}
   \end{center}
 \end{frame}
 
-\begin{frame}[allowframebreaks]
-  \frametitle{Arbeitspakete}
+% \begin{frame}[allowframebreaks]
+%   \frametitle{Arbeitspakete}
 
-  \includegraphics[width=5cm]{Arbeitspakete}
-  \break
-  \includegraphics[width=5cm]{Arbeitspakete-Crawler}
-  \break
-  \includegraphics[width=5cm]{Arbeitspakete-Main}
-\end{frame}
+%   \includegraphics[width=5cm]{Arbeitspakete}
+%   \break
+%   \includegraphics[width=5cm]{Arbeitspakete-Crawler}
+%   \break
+%   \includegraphics[width=5cm]{Arbeitspakete-Main}
+% \end{frame}
 
 \begin{frame}
   \frametitle{Schichtenmodell}
@@ -237,17 +237,17 @@
 
   Modi:
   \begin{enumerate}
-    \item Indexieren von Daten
+    \item Indexierungsphase
       \begin{enumerate}[a]
-        \item Vorbereiten der Daten
+        \item Aufbereitung der Daten
         \item Einfügen in Invertierten Index
       \end{enumerate}
-    \item Abrufen von Daten
+    \item Anfragephase
   \end{enumerate}
 \end{frame}
 
 \begin{frame}[allowframebreaks]
-  \frametitle{1a. Vorbereiten von Daten}
+  \frametitle{1a. Aufbereiten der Daten}
 
   Beispiel:
 
@@ -293,11 +293,12 @@
 
   \begin{itemize}
     \item Zurückführung auf den Wortstamm
+    \item Snowball Stemming
   \end{itemize}
 
   \bigskip
 
-  'klaus-rüdiger' \textbf{'steht' $\rightarrow$ 'steh'} \textbf{'hause' $\rightarrow$ 'haus'} 'cdu'
+  \textbf{'klaus-rüdiger' $\rightarrow$ 'klaus-rudig'} 'steht' \textbf{'hause' $\rightarrow$ 'haus'} 'cdu'
 
   \break
 
@@ -307,7 +308,7 @@
 
   \bigskip
 
-  'klaus-rüdiger' 'steh' 'haus' \textbf{'cdu' $\rightarrow$ 'cdu-csu'}
+  'klaus-rudig' 'steh' 'haus' \textbf{'cdu' $\rightarrow$ 'cdu-csu'}
 \end{frame}
 
 \begin{frame}
@@ -371,8 +372,9 @@
   \begin{itemize}
     \item Langsam beim Einfügen
       \begin{itemize}
-        \item $\rightarrow$ 2-3 min mit Optimierungen
         \item $\rightarrow$ Relevanz für den Use Case
+        \item $\rightarrow$ bei uns: 2-3 min pro Protokoll
+        \item Optimierungen möglich
       \end{itemize}
   \end{itemize}
 
@@ -390,7 +392,6 @@
   Pro:
   \begin{itemize}
     \item Schnell beim Einfügen (lokales Speichern in Sekunden)
-    \item Redundanz für einzelne Keywords
   \end{itemize}
   Con:
   \begin{itemize}
@@ -400,10 +401,10 @@
 \end{frame}
 
 \begin{frame}
-  \frametitle{2. Abrufen von Daten}
+  \frametitle{2. Anfragephase}
 
   \begin{itemize}
-    \item Vorbereitung der Suchbegriffe (Tokenisation, etc.)
+    \item Aufbereiten der Suchbegriffe (Tokenisierung, etc.)
     \item Abrufen der Daten aus Distributed Inverted Index
     \item Bewertung der Relevanz (sortieren)
   \end{itemize}
